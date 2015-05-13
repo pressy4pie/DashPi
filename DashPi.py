@@ -4,14 +4,19 @@ import time
 import random
 
 class dash :
-    def __init(self):
-	# init dash method.
-	self.description = "The class to get info for the dash drawings"
-	self.author = "PressY4Pie (Connor Rigby)"
-    
     def get_speed(self):
 	# The function to get speed from the stuff. for now it will be spoofed to 65 mph.	
-	return 65
+	return 100
+
+    def get_rpm(self):
+	# Read the negitive side of the ignition coil to get rpm. 
+	# It is just pulses so it should just count them then do some math to get rotations per minute.
+	# For now we set it to a fixed number till i create the hardware and maybe get an arduino in the mix.
+	return 1500
+
+    def get_gas(self):
+	# The gas sender is just a resistor that i should be able to measure the resistance across. I don't know what the data will look like so thie is just a filler.
+	return 0
 
 class pyscope :
     screen = None;
@@ -73,28 +78,35 @@ pygame.mouse.set_visible(False)
 # Make a font
 font = pygame.font.Font(None, 30)
 
-screen_size = (pygame.display.Info().current_w, pygame.display.Info().current_h)
-
 # Fill/clear the screen & Update.
 scope.screen.fill((0,0,0))
 pygame.display.update()
 
 
 # Images
-speedo_bac = pygame.image.load('test_speedo.png').convert()
+#speedo_bac = pygame.image.load('test_speedo.png').convert()
+#scope.screen.blit(speedo_bac,(0,0))
 
 # The test screen to be drawn on cuz i cant figure out how to make a surface this size..
 pygame.draw.rect(scope.screen, (255,255,255), (0,0,320,240) ,1)
-scope.screen.blit(speedo_bac,(0,0))
-pygame.display.update()
+pygame.draw.rect(scope.screen, (255,255,255), (0,0,320,20), 1)
 
-pygame.draw.line(scope.screen, (255,255,255), (160,120), (66,193), 1)
+# Top Header thing
+scope.write("Welcome Connor",85,1)
+
 pygame.display.update()
 ev = pygame.event.poll()
 while ev.type != pygame.QUIT:
 	# Do the main stuff.
-	time.sleep(1)
+	speed = dashinfo.get_speed()
+	rpm = dashinfo.get_rpm()
+	gas = dashinfo.get_gas()
+	# Of course this will look better but for now it works.
+	scope.write('Current Speed: {} MPH'.format(speed) , 30, 40)
+	scope.write('Current RPMs: {} RPM'.format(rpm), 30, 80)
+	scope.write('Current Gas Meter {}% '.format(gas), 30, 120) 
 
+	pygame.display.update()
 
 
 
