@@ -2,8 +2,13 @@ import os
 import pygame
 import time
 import random
+import serial
 
 class dash :
+    def __init__ (self)
+	ser = serial.Serial('/dev/ttyAMA0', 115200)
+	ser.write(' ')
+
     def get_speed(self):
 	# The function to get speed from the stuff. for now it will be spoofed to 65 mph.	
 	return 100
@@ -96,15 +101,19 @@ scope.write("Welcome Connor",85,1)
 
 pygame.display.update()
 ev = pygame.event.poll()
+ser = serial.Serial('/dev/ttyACM0', 115200)
+ser.write(str(chr(1))) # Send some data to get some data...
 while ev.type != pygame.QUIT:
 	# Do the main stuff.
+	print ser.readline()
+
 	speed = dashinfo.get_speed()
 	rpm = dashinfo.get_rpm()
 	gas = dashinfo.get_gas()
 	# Of course this will look better but for now it works.
-	scope.write('Current Speed: {} MPH'.format(speed) , 30, 40)
-	scope.write('Current RPMs: {} RPM'.format(rpm), 30, 80)
-	scope.write('Current Gas Meter {}% '.format(gas), 30, 120) 
+	# scope.write('Current Speed: {} MPH'.format(speed), 30, 45)
+	scope.write('Current RPMs: {} RPM'.format(rpm), 30, 115)
+	scope.write('Current Gas Meter: {}% '.format(gas), 30, 190) 
 
 	pygame.display.update()
 
