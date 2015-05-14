@@ -90,11 +90,16 @@ while ev.type != pygame.QUIT:
 	# 65.00 1500 50
 	# MPH   RPM  GAS%
 	line = ser.readline()
-	String[] splitLine = line.split()
+	# print line
+	splitLine = line.split()
 	speed = splitLine[0]
 	rpm = splitLine[1]
 	gas = splitLine[2]
-	
+
+	print speed
+	print rpm
+	print gas
+
 	# Of course this will look better but for now it works.
 	scope.write('Current Speed: {} MPH'.format(speed), 30, 45)
 	scope.write('Current RPMs: {} RPM'.format(rpm), 30, 115)
