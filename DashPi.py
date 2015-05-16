@@ -49,7 +49,7 @@ pygame.display.Info().current_h)
         "Destructor to make sure pygame shuts down, etc."
 
     def write(self, input_text, x, y):
-	font = pygame.font.Font(None, 30)
+	font = pygame.font.Font('DroidSans.ttf', 20)
         text_surface = font.render(input_text, True, (255, 255, 255))  # White text
         # Blit the text at input x, and y
         self.screen.blit(text_surface, (x, y))
@@ -59,22 +59,21 @@ pygame.display.Info().current_h)
 scope = pyscope()
 # Don't display cursor.
 pygame.mouse.set_visible(False)
-# Make a font
-font = pygame.font.Font('DroidSans.ttf', 30)
 
 # Fill/clear the screen & Update.
 scope.screen.fill((0,0,0))
 pygame.display.update()
 
 # The test screen to be drawn on cuz i cant figure out how to make a surface this size..
-main_rect = pygame.draw.rect(scope.screen, (0,0,0), (0,0,320,240))
-main_rect_outline = pygame.draw.rect(scope.screen, (255,255,255), (0,0,320,240),1)
-header_rect = pygame.draw.rect(scope.screen, (0,0,0), (0,0,320,20))
-header_rect = pygame.draw.rect(scope.screen, (255,255,255), (0,0,320,20),1)
+main_rect = pygame.draw.rect(scope.screen, (0,0,0), (0,20,320,220))
+main_rect_outline = pygame.draw.rect(scope.screen, (255,255,255), (0,20,320,220),1)
+
+header_rect = pygame.draw.rect(scope.screen, (0,0,0), (0,0,320,21))
+header_rect_outline = pygame.draw.rect(scope.screen, (255,255,255), (0,0,320,21),1)
 
 # Top Header thing
 # I'm sure ill display some actual information at some point.
-scope.write("Welcome Connor",85,1)
+scope.write("Welcome Connor",85,0)
 
 # Update the screen before starting the main loop
 pygame.display.update()
@@ -98,7 +97,7 @@ while ev.type != pygame.QUIT:
 	splitLine = line.split()
 	# print len(splitLine)
 
-	if len(splitLine) < 4: # Make sure we have the correct data here.
+	if len(splitLine) == 3: # Make sure we have the correct data here.
 		speed = splitLine[0]
 		rpm = splitLine[1]
 		gas = splitLine[2]
@@ -116,7 +115,8 @@ while ev.type != pygame.QUIT:
 	# Update the display so we can see what's up.
 	pygame.display.update()
 
-	main_rect = pygame.draw.rect(scope.screen, (0,0,0), (0,20,320,220))
+	pygame.draw.rect(scope.screen, (0,0,0), (0,20,320,220))
+	pygame.draw.rect(scope.screen, (255,255,255), (0,20,320,220),1)
 
 
 #exit in 2 seconds
