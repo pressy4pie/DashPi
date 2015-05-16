@@ -1,0 +1,75 @@
+  
+volatile byte half_revolutions;
+unsigned long timeold;
+unsigned int speedo_rpm; //rotations per minute of the wheels
+float car_speed; //speed that the car is actually moving at
+unsigned int tacho_rpm; //rotations per minute of the crank
+unsigned int gas; //percent of gas in the tank
+
+void setup() {
+  Serial.begin(115200);
+  
+  //set everything to zero.
+  car_speed = 0;
+  speedo_rpm = 0;
+  tacho_rpm = 0;
+  gas = 0;
+  
+  // Speed Sensor stuff.
+  attachInterrupt(0, magnet_detect, RISING);
+  half_revolutions = 0;
+  timeold = 0;
+}
+
+void loop() 
+{
+  car_speed = get_speed();
+  tacho_rpm = get_rpm();
+  gas = get_gas();
+  //Package it all up and send it in one line to be split in python on the pi
+  
+  if(Serial.available()){ //rpi must send something random. doesnt matter. but this wont start till it recieves some data
+    Serial.print(car_speed);
+    Serial.print(" ");
+    Serial.print(tacho_rpm);
+    Serial.print(" " );
+    Serial.print(gas);
+    Serial.println("");
+  }
+  delay(10);
+}
+
+/*
+
+The functions used to gather the data
+
+*/
+
+void magnet_detect()
+{
+  half_revolutions++;
+}
+
+int get_speed()
+{
+  if (half_revolutions >= 20) { 
+  speedo_rpm = 30*1000/(millis() - timeold)*half_revolutions;
+  timeold = millis();
+  half_revolutions = 0;
+  }
+  
+  //return speedo_rpm * 60; //return in miles per hour
+  return random(0,100); //spoof for now till i get the actual hardware
+}
+
+int get_rpm()
+{
+ // I'm not entirely sure how i can do this one yet, so spoofing for now.
+ return random(500,4000); 
+}
+
+int get_gas()
+{
+ // I'm not entirely sure how i can do this one yet, so spoofing for now.
+ return random(0,100); 
+}
